@@ -1,0 +1,38 @@
+
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>P2F-demo</title> 
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <style type="text/css">
+        #stage{
+            height: 400px;
+            width: 400px;
+            background-color: green;
+            position: relative;
+        }
+
+        #box, #box2{
+            height: 100px;
+            width: 100px;
+            background-color: red;
+            position: absolute;
+            left:30px;
+        }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+       <div id="box"></div>
+
+       <div id="box2" style="top:100px"></div> 
+
+    </div>
+    <script src="touch_plus.js" ></script>
+    <script type="text/javascript">
+        var move=new plus("box",{ move:true, wrapper:"stage",zoom:true });
+        var move2=new plus("box2",{ move:true, moveDirection:1, wrapper:"stage"});
+    </script>
+  </body>
+</html>
