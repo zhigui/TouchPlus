@@ -14,8 +14,8 @@
         }
 
         #box, #box2{
-            height: 100px;
-            width: 100px;
+            height: 200px;
+            width: 200px;
             background-color: red;
             position: absolute;
             left:30px;
@@ -23,16 +23,20 @@
     </style>
   </head>
   <body>
+    <div id="debug"></div>
     <div id="stage">
        <div id="box"></div>
 
-       <div id="box2" style="top:100px"></div> 
+       <!-- <div id="box2" style="top:100px"></div> -->
 
     </div>
+    <script type="text/javascript" src="http://zeptojs.com/zepto.min.js"></script>
     <script src="touch_plus.js" ></script>
     <script type="text/javascript">
         var move=new plus("box",{ move:true, wrapper:"stage",zoom:true });
-        var move2=new plus("box2",{ move:true, moveDirection:1, wrapper:"stage"});
+        // var move2=new plus("box2",{ move:true, moveDirection:1, wrapper:"stage"});
+
+       
     </script>
   </body>
 </html>

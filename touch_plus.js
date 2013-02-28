@@ -70,30 +70,32 @@
 			}
 		},
 		_start: function (e) {
-			var that=this;
-			that.fingers=e.touches.length;
-			that.touchStart.x1=e.touches[0].pageX;
-			that.touchStart.y1=e.touches[0].pageY;
-			if(that.fingers>1){
-				that.touchStart.x2=e.touches[1].pageX;
-				that.touchStart.y2=e.touches[1].pageY;
-				var deltaX=touchStart.x2-touchStart.x1;
-				var deltaY=touchStart.y2-touchStart.y1;
-				that.touchStart.delta=Math.sqrt( Math.pow(deltaX,2), Math.pow(deltaY,2) );
-			}
+				var that=this;
+				that.fingers=e.touches.length;
+				that.touchStart.x1=e.touches[0].pageX;
+				that.touchStart.y1=e.touches[0].pageY;
+				if(e.touches.length>1){
+					that.touchStart.x2=e.touches[1].pageX;
+					that.touchStart.y2=e.touches[1].pageY;
+					var deltaX=that.touchStart.x2-that.touchStart.x1;
+					var deltaY=that.touchStart.y2-that.touchStart.y1;
+					that.touchStart.delta=Math.sqrt( Math.pow(deltaX,2), Math.pow(deltaY,2) );
+				}
 
-			if(that.options.zoom && e.touches.length > 1 ){
-				c1=Math.abs(e.touches[0].pageX-e.touches[1].pageX);
-				c2 =Math.abs(e.touches[0].pageY-e.touches[1].pageY);
-				that.touchesDistStart = Math.sqrt(c1 * c1 + c2 * c2);
-			}
+				 
+				if(that.options.zoom && e.touches.length > 1){
+					c1=Math.abs(e.touches[0].pageX-e.touches[1].pageX);
+					c2 =Math.abs(e.touches[0].pageY-e.touches[1].pageY);
+					that.touchesDistStart = Math.sqrt(c1 * c1 + c2 * c2);
+				}
+			 
+			
 
 			//console.log(that.touchStart);
 		},
 		_move: function (e) {
 			var that=this;
 			e.preventDefault();
-
 			if(that.fingers<2){
 				that.touchEnd.x=e.touches[0].pageX;
 				that.touchEnd.y=e.touches[0].pageY;
@@ -107,7 +109,7 @@
 				var targetObjWidth=that.targetObj.clientWidth;
 				var targetObjHeight=that.targetObj.clientHeight;
 
-				 console.log(that._offset(that.targetObj));
+				 console.log(that._offset(that.wrapperObj));
 				if(that.options.limitPos){
 					console.log(that.touchEnd.x)
 				}
@@ -130,12 +132,14 @@
 
 
 
+			//双手指放大
 			if(that.options.zoom && e.touches.length > 1){
 				c1=Math.abs(e.touches[0].pageX-e.touches[1].pageX);
 				c2 =Math.abs(e.touches[0].pageY-e.touches[1].pageY);
 				that.touchesDist = Math.sqrt(c1 * c1 + c2 * c2);
 				scale = 1 / that.touchesDistStart * that.touchesDist * this.scale;
 				that.lastScale = scale / this.scale;
+				document.getElementById("debug").innerHTML=that.touchesDistStart;
 				//this.targetObj.style["-webkit-transform"] = 'translate(' + newX + 'px,' + newY + 'px) scale(' + scale + ')' + translateZ;
 				this.targetObj.style["-webkit-transform"] = 'scale(' + scale + ')';
 			}
