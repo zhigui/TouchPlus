@@ -50,6 +50,7 @@
 
 		that._bind("touchstart", that.targetObj);
 		that._bind("touchmove", that.targetObj);
+		that._bind("touchend", that.targetObj);
 
 	}
 	plus.prototype={
@@ -70,7 +71,9 @@
 			}
 		},
 		_start: function (e) {
+
 				var that=this;
+				that.zoomed = false;
 				that.fingers=e.touches.length;
 				that.touchStart.x1=e.touches[0].pageX;
 				that.touchStart.y1=e.touches[0].pageY;
@@ -96,7 +99,7 @@
 		_move: function (e) {
 			var that=this;
 			e.preventDefault();
-			if(that.fingers<2){
+			if(e.touches.length<2){
 				that.touchEnd.x=e.touches[0].pageX;
 				that.touchEnd.y=e.touches[0].pageY;
 			}else{
@@ -109,7 +112,7 @@
 				var targetObjWidth=that.targetObj.clientWidth;
 				var targetObjHeight=that.targetObj.clientHeight;
 
-				 console.log(that._offset(that.wrapperObj));
+				// console.log(that._offset(that.wrapperObj));
 				if(that.options.limitPos){
 					console.log(that.touchEnd.x)
 				}
@@ -137,11 +140,13 @@
 				c1=Math.abs(e.touches[0].pageX-e.touches[1].pageX);
 				c2 =Math.abs(e.touches[0].pageY-e.touches[1].pageY);
 				that.touchesDist = Math.sqrt(c1 * c1 + c2 * c2);
+				// 移动后的距离/移动前的距离 =》比例  1 / that.touchesDistStart * that.touchesDist
 				scale = 1 / that.touchesDistStart * that.touchesDist * this.scale;
-				that.lastScale = scale / this.scale;
-				document.getElementById("debug").innerHTML=that.touchesDistStart;
+				that.lastScale = scale;
+				//document.getElementById("debug").innerHTML=that.touchesDistStart;
 				//this.targetObj.style["-webkit-transform"] = 'translate(' + newX + 'px,' + newY + 'px) scale(' + scale + ')' + translateZ;
 				this.targetObj.style["-webkit-transform"] = 'scale(' + scale + ')';
+				that.zoomed = true;
 			}
 
 			
@@ -149,7 +154,12 @@
 
 		},
 		_end: function (e) {
-
+			if(this.zoomed){
+				this.scale=this.lastScale;
+				console.log(this.lastScale);
+			}
+			
+			//this.scale=this.lastScale;
 		},
 		_resize: function (e){
 
